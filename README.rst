@@ -1,6 +1,12 @@
 Magic Cube
 ==========
 
+- https://youtu.be/kNevEOawpck
+- https://youtu.be/dp85uFPBYCA
+- https://youtu.be/eP5-W28tCzQ
+
+-----------------------------------
+
 It had to happen someday.  Somebody stop me!
 
 .. image:: http://4.bp.blogspot.com/-iruqaXDstKk/UKBejowDVkI/AAAAAAAAZkM/c2tir0qcexQ/s400/test04.png
