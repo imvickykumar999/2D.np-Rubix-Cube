@@ -1,0 +1,331 @@
+/* General
+--------------------------------------------*/
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+	background: #222 url(images/background.jpg) center top;
+	width: 100%;
+	height: 100%;
+}
+
+button img {
+	vertical-align: middle;
+}
+
+button img + span {
+    margin: 0 0 0 15px;
+}
+
+button, .button {
+	font-size: 18px;
+	color: #ffffff;
+	padding: 8px 19px;
+	border-radius: 3px;
+	border: 1px solid #000000;
+	background: linear-gradient(to bottom, #333333 0%, #000000);
+	box-shadow:
+		0px 1px 1px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,1);
+	text-shadow:
+		0px -1px 0px rgba(000,000,000,0.7),
+		0px 1px 0px rgba(255,255,255,0.3);
+}
+
+button:hover, .button:hover {
+	background: linear-gradient(to bottom, #444444 0%, #111111);
+}
+
+button:active, .button:active {
+	background: linear-gradient(to top, #333333 0%, #000000);
+}
+
+button:disabled, .button:disabled {
+    background: linear-gradient(to bottom, #666 0%, #333);
+    color: #222;
+}
+
+.observation {
+    margin: 3px 0;
+    font-style: italic;
+}
+
+.control-bar {
+	margin: 10px auto;
+	text-align: center;
+}
+
+.clear-float {
+    clear: both;
+}
+
+.control-bar-cell-2 {
+    width: 50%;
+    float: left;
+}
+
+/* jQuery UI - General
+--------------------------------------------*/
+
+.ui-dialog {
+    font-size: 14px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    font-size: 1.15em;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    font-size: 1.15em;
+    padding: 0.3em;
+}
+
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: 0.2em 0.4em 0.2em 0;
+    border-radius: 3px;
+}
+
+/* Main Page
+--------------------------------------------*/
+
+#content {
+	width: 900px;
+	margin: 20px auto;
+	background: #333;
+	padding: 20px 0;
+	color: #e0e0e0;
+    box-shadow: 0px 0px 10px 5px rgba(000,000,000,1);
+}
+
+#title {
+	font-size: 40px;
+	background: #666;
+	margin: 10px 0 20px;
+	padding: 4px 10px;
+}
+
+#page-footer {
+	font-size: 10px;
+	color: #666;
+	text-align: center;
+	margin: 10px 0 0;
+}
+
+#historyContainer {
+    font-size: 12px;
+    background: #666;
+    margin: 20px 0 0;
+    padding: 4px;
+    position: relative;
+}
+
+#buttonReset {
+	color: #ff0033;
+}
+
+/* Main Page - Cube
+--------------------------------------------*/
+
+.cube {
+	background: #101010;/**/
+	border: 15px solid #000;
+	padding: 10px;
+	margin: 0 auto;
+	border-radius: 3px;
+}
+
+.cube:focus {
+    background: #171717;/**/
+    border-color: #0a0a0a;
+    outline: none;
+}
+
+.cube .cube-face td {
+	width: 37px;
+	height: 37px;
+	border-radius: 3px;
+	border: 2px solid #ffffff;/**/
+	font-size: 20px;
+	text-align: center;
+	vertical-align: middle;
+	color: #888;
+    padding: 0;
+}
+
+.cube .cell-cw {
+    background: url(images/rotate-cw.png) center center;
+    background-size: 33px 33px;
+}
+
+.cube .cell-ccw {
+    background: url(images/rotate-ccw.png) center center;
+    background-size: 33px 33px;
+}
+
+.cube .cell-left {
+    background: url(images/left.png) center center;
+    background-size: 33px 33px;
+}
+
+.cube .cell-right {
+    background: url(images/right.png) center center;
+    background-size: 33px 33px;
+}
+
+.cube .cell-up {
+    background: url(images/up.png) center center;
+    background-size: 33px 33px;
+}
+
+.cube .cell-down {
+    background: url(images/down.png) center center;
+    background-size: 33px 33px;
+}
+
+#faceRotateButtons, #cubeRotateButtons {
+	margin: 0 auto;
+}
+
+#dialogControls {
+    text-align: center;
+}
+
+/* Dialog Help
+--------------------------------------------*/
+
+#dialogHelp {
+    color: #aaaaaa;
+}
+
+#dialogHelp .section-title {
+    margin: 10px 0;
+    font-size: 1.1em;
+    text-decoration: underline;
+}
+
+#dialogHelp strong {
+    color: #f0f0f0;
+}
+
+#dialogHelp table {
+    width: 100%;
+    border: 1px solid #333;
+}
+
+#dialogHelp table tr:nth-child(odd)  {
+    background-color: #222;
+}
+
+#dialogHelp table tr td:first-child {
+    white-space: nowrap;
+}
+
+#dialogHelp table tr td {
+    padding: 0 5px;
+}
+
+/* Dialog Import
+--------------------------------------------*/
+
+#dialogImport #importValue {
+    width: 400px;
+    height: 100px;
+    overflow: auto;
+}
+
+#dialogImport .label {
+    margin: 0  0 10px 0;
+}
+
+/* Dialog Export
+--------------------------------------------*/
+
+#dialogExport #exportValue {
+    width: 400px;
+    height: 100px;
+    overflow: auto;
+}
+
+#dialogExport .label {
+    margin: 0  0 10px 0;
+}
+
+#dialogExport #export_notationType {
+    margin: 3px 0;
+}
+
+#dialogExport #export_notationType {
+    margin: 10px 0;
+}
+
+#dialogExport .notation-options {
+    border: 2px solid #333333;
+    border-radius: 2px;
+    margin-top: 10px;
+    padding: 7px;
+    background-color: #222222;
+}
+
+/* Dialog About
+--------------------------------------------*/
+
+#dialogAbout #about_title {
+    margin: 0 0 10px;
+}
+
+#dialogAbout #about_appName {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#dialogAbout #about_appVersion {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#dialogImport .label {
+    margin: 0  0 10px 0;
+}
+
+/* Test
+--------------------------------------------*/
+
+.rbk-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background: #0078a3;
+    border: 1px solid black;
+    border-spacing: 100px;
+}
+
+.rbk-cell {
+    position: absolute;
+    width: 37px;
+    height: 37px;
+    /*margin: -18px 0 0 -18px;/**/
+    border-radius: 3px;
+    border: 2px solid #ffffff;/**/
+    font-size: 20px;
+    text-align: center;
+    vertical-align: middle;
+    color: #888;
+    background-color: #ba9d37;
+    padding: 0;
+    /*-webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;/**/
+    /*transition: all 1s ease-in-out;/**/
+    transform: rotate(0deg);
+    border-spacing: 0px;
+    line-height: 37px;
+}
+
+.test {
+    left: 10px;
+    background-color:black;
+    transform: rotate(90deg);
+}

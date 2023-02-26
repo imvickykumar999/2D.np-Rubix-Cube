@@ -1,6 +1,4 @@
-*~
-*.aux
-*.log
-*.pdf
-*.pyc
-*.png
+/compiled
+/.idea/*.iws
+/.idea/workspace.xml
+/.idea/tasks.xml
