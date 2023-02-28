@@ -1,108 +1,112 @@
-# !pip install pygame
-
-import pygame
-import math
-import numpy as np
-import sys
-
-'''
-Not really sure but I think pygame needs to run under Python 3.6
-
-Here is what I used:
-Pycharm - Community Version
-Python Ver:3.6
-Pygame Ver:2.0.1
-Numpy Ver: 1.19.3
-
-Good Luck!
-'''
-print()
-print("Python Ver: " + str(sys.version_info.major) + '.' + str(sys.version_info.minor))
-print("Pygame Ver: " + pygame.__version__)
-print("Numpy Ver:  " + np.__version__)
-
-BLACK = (  0,   0,   0)
-WHITE = (255, 255, 255)
-GREEN = (  0, 255,   0)
-RED   = (  0,   0, 255)
-
-WDT = 640
-HGT = 480
-
-pygame.init()                                     # Set up pygame parameters
-pygame.display.set_caption("Rotating 3D Cube Projection in PYGame")
-screen = pygame.display.set_mode((WDT, HGT))
-
-points = [n for n in range(8)]                   # Define 3D cube
-
-points[0] = [[-1], [-1],  [1]]
-points[1] = [[1],  [-1],  [1]]
-points[2] = [[1],   [1],  [1]]
-points[3] = [[-1],  [1],  [1]]
-points[4] = [[-1], [-1], [-1]]
-points[5] = [[1],  [-1], [-1]]
-points[6] = [[1],   [1], [-1]]
-points[7] = [[-1],  [1], [-1]]
+from ursina import *
 
 
-def draw_line(i, j, k):                   # Draw lines between edges of cube
-    a = k[i]
-    b = k[j]
-    pygame.draw.line(screen, GREEN, (a[0], a[1]), (b[0], b[1]), 2)
+app = Ursina()
+
+cube_colors = [
+    color.pink,  # right
+    color.orange,   # left
+    color.white,    # top
+    color.yellow,   # bottom
+    color.azure,    # back
+    color.green,    # front
+]
+
+# make a model with a separate color on each face
+combine_parent = Entity(enabled=False)
+for i in range(3):
+    dir = Vec3(0,0,0)
+    dir[i] = 1
+
+    e = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[i*2])
+    e.look_at(dir, 'up')
+
+    e_flipped = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[(i*2)+1])
+    e_flipped.look_at(-dir, 'up')
+
+combine_parent.combine()
 
 
-angle_x = 0                    # starting x position
-angle_y = 0                    # starting y position
-angle_z = 0                    # starting z position
+# place 3x3x3 cubes
+cubes = []
+for x in range(3):
+    for y in range(3):
+        for z in range(3):
+            e = Entity(model=copy(combine_parent.model), position=Vec3(x,y,z) - (Vec3(3,3,3)/3), texture='white_cube')
+            cubes.append(e)
 
-cube_size = 600                # 300 = small   900 = large
-distance_from_cube = 5         # view point distance - MUST BE GREATER THAN 1
 
-while True:
-    screen.fill(BLACK)
+# rotate a side when we click on it
+collider = Entity(model='cube', scale=3, collider='box', visible=False)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:    pygame.quit()
-        if event.type == pygame.KEYDOWN: pygame.quit()
+def collider_input(key):
+    if mouse.hovered_entity == collider:
+        if key == 'left mouse down':
+            rotate_side(mouse.normal, 1)
+        elif key == 'right mouse down':
+            rotate_side(mouse.normal, -1)
 
-    projected_points = [j for j in range(len(points))]
+collider.input = collider_input
 
-    rotation_x = [[1,                 0,                  0],
-                  [0, math.cos(angle_x), -math.sin(angle_x)],
-                  [0, math.sin(angle_x),  math.cos(angle_x)]]
 
-    rotation_y = [[math.cos(angle_y), 0, -math.sin(angle_y)],
-                  [0,                 1,                  0],
-                  [math.sin(angle_y), 0, math.cos(angle_y)]]
+rotation_helper = Entity()
 
-    rotation_z = [[math.cos(angle_z), -math.sin(angle_z), 0],
-                  [math.sin(angle_z),  math.cos(angle_z), 0],
-                  [0,              0,                     1]]
 
-    index = 0
-    for point in points:
-        rotated_y = np.matmul(rotation_y, point)        # Cube rotation in y axis
-        rotated_x = np.matmul(rotation_x, rotated_y)    # Cube rotation in yx axis
-        rotated_xyz = np.matmul(rotation_z, rotated_x)  # Cube rotation in yxz axis
+def rotate_side(normal, direction=1, speed=1):
+    if normal == Vec3(1,0,0):
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x > 0]
+        rotation_helper.animate('rotation_x', 90 * direction, duration=.2*speed, curve=curve.linear)
+    elif normal == Vec3(-1,0,0):
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x < 0]
+        rotation_helper.animate('rotation_x', -90 * direction, duration=.2*speed, curve=curve.linear)
 
-        z = 1 / (distance_from_cube - rotated_xyz[2][0])
-        projection_matrix = [[z, 0, 0], [0, z, 0]]
-        projected_2d = np.matmul(projection_matrix, rotated_xyz)
+    elif normal == Vec3(0,1,0):
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y > 0]
+        rotation_helper.animate('rotation_y', 90 * direction, duration=.2*speed, curve=curve.linear)
+    elif normal == Vec3(0,-1,0):
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y < 0]
+        rotation_helper.animate('rotation_y', -90 * direction, duration=.2*speed, curve=curve.linear)
 
-        x = int(projected_2d[0][0] * cube_size) + WDT // 2   # x,y 2D projection
-        y = int(projected_2d[1][0] * cube_size) + HGT // 2
+    elif normal == Vec3(0,0,1):
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.z > 0]
+        rotation_helper.animate('rotation_z', -90 * direction, duration=.2*speed, curve=curve.linear)
+    elif normal == Vec3(0,0,-1):
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.z < 0]
+        rotation_helper.animate('rotation_z', 90 * direction, duration=.2*speed, curve=curve.linear)
 
-        projected_points[index] = [x, y]
-        index += 1
-        pygame.draw.circle(screen, RED, (x, y), 4)
 
-    for m in range(4):                                 # Draw lines to connect dots/circles
-        draw_line(m,       (m+1)%4, projected_points)
-        draw_line(m+4, (m+1)%4 + 4, projected_points)
-        draw_line(m,           m+4, projected_points)
+    invoke(reset_rotation_helper, delay=.22*speed)
 
-    angle_x += 0.00030       # Rotation speed about x axis
-    angle_y += 0.00020       # Rotation speed about y axis
-    angle_z += 0.00010       # Rotation speed about z axis
+    if speed:
+        collider.ignore_input = True
+        invoke(setattr, collider, 'ignore_input', False, delay=.24*speed)
+        invoke(check_for_win, delay=.25*speed)
 
-    pygame.display.update()
+
+def reset_rotation_helper():
+    [setattr(e, 'world_parent', scene) for e in cubes]
+    rotation_helper.rotation = (0,0,0)
+
+
+win_text_entity = Text(y=.35, text='', color=color.green, origin=(0,0), scale=3)
+
+def check_for_win():
+    if {e.world_rotation for e in cubes} == {Vec3(0,0,0)}:
+        win_text_entity.text = 'SOLVED!'
+        win_text_entity.appear()
+    else:
+        win_text_entity.text = ''
+
+
+def randomize():
+    faces = (Vec3(1,0,0), Vec3(0,1,0), Vec3(0,0,1), Vec3(-1,0,0), Vec3(0,-1,0), Vec3(0,0,-1))
+    for i in range(20):
+        rotate_side(normal=random.choice(faces), direction=random.choice((-1,1)), speed=0)
+
+randomize_button = Button(text='randomize', color=color.azure, position=(.7,-.4), on_click=randomize)
+randomize_button.fit_to_text()
+
+window.color = color._16
+EditorCamera()
+
+app.run()
