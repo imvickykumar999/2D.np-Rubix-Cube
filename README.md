@@ -3,6 +3,8 @@ Magic Cube
 
 ### `Last Layer Algorithms`
 
+- [Tutorial to Solve 3x3 Rubix Cube](https://youtu.be/Dj5vWQsp6e4)
+
       F R U - R' U' F'        : face
 
       R U2' R' - U' R U' R'   : edge
@@ -13,9 +15,11 @@ Magic Cube
 
 ------------
 
-- https://youtu.be/kNevEOawpck
-- https://youtu.be/dp85uFPBYCA
-- https://youtu.be/eP5-W28tCzQ
+### `YouTube Videos`
+
+- [Solving 2x2 and 3x3 Rubix Cube](https://youtu.be/kNevEOawpck)
+- [Solving 2x2 Rubix Cube](https://youtu.be/dp85uFPBYCA)
+- [Solving 2x2 Rubix Pyramid](https://youtu.be/eP5-W28tCzQ)
 
 -----------------------------------
 
